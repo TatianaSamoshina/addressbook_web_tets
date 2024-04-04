@@ -16,8 +16,6 @@ namespace addressbook_web_tets
             this.name = name;
             this.header = header;
             this.footer = footer;
-            //Header = header;
-            //Footer = footer;
         }
         public string Name 
         { 
