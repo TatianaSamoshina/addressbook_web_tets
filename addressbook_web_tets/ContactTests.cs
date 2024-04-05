@@ -60,7 +60,6 @@ namespace addressbook_web_tets
         private void ReturnToHomePage()
         {
             driver.FindElement(By.LinkText("home")).Click();
-            driver.Navigate().GoToUrl("http://localhost/addressbook/addressbook/");
         }
 
         private void SubmitContactCreation()
@@ -81,7 +80,6 @@ namespace addressbook_web_tets
         private void GoToContactsPage()
         {
             driver.FindElement(By.LinkText("add new")).Click();
-            driver.Navigate().GoToUrl("http://localhost/addressbook/addressbook/edit.php");
         }
 
         private void Login(AccountData account)
