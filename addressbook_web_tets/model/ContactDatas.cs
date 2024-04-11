@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace addressbook_web_tets
 {
-    internal class ContactDatas
+    public class ContactDatas
     {
         private string Fname;
         private string Lname;

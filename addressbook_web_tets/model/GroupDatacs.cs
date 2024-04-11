@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace addressbook_web_tets
 {
-    internal class GroupDatacs
+    public class GroupDatacs
     {
         private string name;
         private string header;
