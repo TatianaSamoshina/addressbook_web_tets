@@ -14,7 +14,7 @@ namespace addressbook_web_tets
         protected IWebDriver driver;
         protected string baseURL;
         protected LoginHelper loginHelper;
-        protected NavigationHelper navigationHelper;
+        public NavigationHelper navigationHelper;
         protected ContactHelper contactHelper;
         protected GroupHelper groupHelper;
     
@@ -22,10 +22,10 @@ namespace addressbook_web_tets
         {
             driver = new FirefoxDriver();
             baseURL = "http://localhost/addressbook/addressbook";
-            loginHelper = new LoginHelper(driver);
-            navigationHelper = new NavigationHelper(driver, baseURL);
-            contactHelper = new ContactHelper(driver);
-            groupHelper = new GroupHelper(driver);
+            loginHelper = new LoginHelper(this);
+            navigationHelper = new NavigationHelper(this, baseURL);
+            contactHelper = new ContactHelper(this);
+            groupHelper = new GroupHelper(this);
         }
         public void Stop()
         {
@@ -47,5 +47,13 @@ namespace addressbook_web_tets
         { get { return contactHelper; } }
         public GroupHelper Groups
         { get { return groupHelper; } }
+
+        public IWebDriver Driver 
+        { 
+            get
+            {
+                return driver;
+            }
+         }
     }
 }

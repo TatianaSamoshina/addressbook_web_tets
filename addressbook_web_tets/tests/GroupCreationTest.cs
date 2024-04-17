@@ -13,13 +13,8 @@ namespace addressbook_web_tets
         [Test]
         public void GroupCreationTest()
         {
-            app.Navigator.GoToGroupsPage();
-            app.Groups
-                .InitGroupCreation()
-                .FillGroupForm(new GroupDatacs("qw","as","zx"))
-                .SubmitGroupCreation();
-            app.Navigator.ReturnToGroupPage();
-            app.Auth.Logout();
+            GroupDatacs group = new GroupDatacs("qw", "as", "zx");
+            app.Groups.Create(group);
         }
     }
 }
