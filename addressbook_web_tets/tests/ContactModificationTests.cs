@@ -11,10 +11,10 @@ namespace addressbook_web_tets
     public class ContactModificationTests : TestBase
     {
         [Test]
-        public void GroupModificationTests()
+        public void ContactModificationTest()
         {
             ContactDatas newData = new ContactDatas("n1", "l1");
-            app.Contacts.Modify(9, newData);
+            app.Contacts.Modify(1, newData);
         }
     }
 }
