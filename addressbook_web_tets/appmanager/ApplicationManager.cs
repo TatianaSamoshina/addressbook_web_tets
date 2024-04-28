@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Firefox;
+
+
 
 namespace addressbook_web_tets
 {
@@ -17,7 +20,8 @@ namespace addressbook_web_tets
         public NavigationHelper navigationHelper;
         protected ContactHelper contactHelper;
         protected GroupHelper groupHelper;
-    
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+
         public ApplicationManager()
         {
             driver = new FirefoxDriver();
@@ -27,6 +31,20 @@ namespace addressbook_web_tets
             contactHelper = new ContactHelper(this);
             groupHelper = new GroupHelper(this);
         }
+        
+
+        public static ApplicationManager GetInstance()
+        {
+            if (! app.IsValueCreated) 
+            {
+                ApplicationManager newInstance = new ApplicationManager();
+                newInstance.Navigator.OpenHomePage();
+                app.Value = newInstance;
+            }
+            return app.Value;
+        }
+
+
         public void Stop()
         {
             try

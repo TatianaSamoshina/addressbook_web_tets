@@ -19,7 +19,7 @@ namespace addressbook_web_tets
             FillContactForm(contact);
             SubmitContactCreation();
             manager.Navigator.ReturnToHomePage();
-            manager.Auth.Logout();
+            //manager.Auth.Logout();
 
             return this;
         }
@@ -27,24 +27,70 @@ namespace addressbook_web_tets
         public ContactHelper Modify(int v, ContactDatas newData)
         {
             manager.Navigator.ReturnToHomePage();
+
+            if (!IsContactPresent(v))
+            {
+                Create(newData);
+                return this;
+            }
+
             SelectContact(v);
             FillContactForm(newData);
             SubmitContactModification();
             manager.Navigator.ReturnToHomePage();
-            manager.Auth.Logout();
+            //manager.Auth.Logout();
 
             return this;
         }
+
         public ContactHelper Remove(int p)
         {
             manager.Navigator.ReturnToHomePage();
+            if (!IsContactDeletePresent(p))
+            {
+                ContactDatas contact = new ContactDatas("n1", "l1");
+                Create(contact);
+                manager.Navigator.ReturnToHomePage();
+            }
             SelectContactDelete(p);
             RemoveContact();
             manager.Navigator.ReturnToHomePage();
-            manager.Auth.Logout();
+            //manager.Auth.Logout();
             return this;
         }
 
+
+        public ContactHelper SelectContact(int index)
+        {
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 1) + "]/td[8]/a/img")).Click();
+            return this;
+        }
+
+        public bool IsContactPresent(int index)
+        {
+            try
+            {
+                driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 1) + "]/td[8]/a/img"));
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
+    
+        public bool IsContactDeletePresent(int index)
+        {
+            try
+            {
+                driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]"));
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+        }
         public ContactHelper SelectContactDelete(int index)
         {
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
@@ -64,29 +110,16 @@ namespace addressbook_web_tets
         }
 
 
-        public ContactHelper SelectContact(int index)
-        {
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 1) + "]/td[8]/a/img")).Click();
-            return this;
-        }
-
         public ContactHelper FillContactForm(ContactDatas contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.FName);
-            driver.FindElement(By.Name("lastname")).Click();
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.LName);
+            Type(By.Name("firstname"), contact.FName);
+            Type(By.Name("lastname"), contact.LName);
             return this;
         }
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
             return this;
-        }
-
-       
+        }      
     }
-
 }

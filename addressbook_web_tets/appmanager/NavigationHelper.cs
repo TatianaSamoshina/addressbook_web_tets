@@ -27,12 +27,21 @@ namespace addressbook_web_tets
         }
         public void GoToGroupsPage()
         {
+            if (driver.Url == baseURL + "/addressbook/group.php"
+                && IsElementPresent(By.Name("new")))
+            {
+                return;
+            }
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(driver => driver.FindElement(By.LinkText("groups")).Displayed);
             driver.FindElement(By.LinkText("groups")).Click();
         }
         public void ReturnToHomePage()
         {
+            if (driver.Url == baseURL + "/addressbook/")
+            {
+                return;
+            }
             driver.FindElement(By.LinkText("home")).Click();
         }
         public void ReturnToGroupPage()

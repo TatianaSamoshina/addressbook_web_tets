@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace addressbook_web_tets
 {
     [TestFixture]
-    public class GroupRemovalTests : TestBase
+    public class GroupRemovalTests : AuthTestBase//TestBase
     {
         [Test]
         public void GroupRemovalTest() 
