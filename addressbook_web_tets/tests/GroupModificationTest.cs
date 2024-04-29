@@ -13,8 +13,18 @@ namespace addressbook_web_tets
         [Test]
         public void GroupModificationTests()
         {
-            GroupDatacs newData = new GroupDatacs("qw", "as", null);
-            app.Groups.Modify(1, newData);
+            // Проверяем наличие группы перед ее модификацией
+            if (!app.Groups.IsGroupPresent(1))
+            {
+                GroupDatacs newData = new GroupDatacs("qw", "as", null);
+                app.Groups.Create(newData);
+                // Возвращаемся на страницу групп после создания новой группы
+                app.Navigator.GoToGroupsPage();
+            }
+
+            // Модифицируем группу
+            GroupDatacs newDataForModification = new GroupDatacs("newName", "newHeader", "newFooter");
+            app.Groups.Modify(1, newDataForModification);
         }
     }
 }

@@ -25,11 +25,6 @@ namespace addressbook_web_tets
         public GroupHelper Modify(int v, GroupDatacs newData)
         {
             manager.Navigator.GoToGroupsPage();
-            if (!IsGroupPresent(v))
-            {
-                Create(newData);
-                return this;
-            }
             SelectGroup(v);
             InitGroupModification();
             FillGroupForm(newData);
@@ -40,12 +35,6 @@ namespace addressbook_web_tets
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupsPage();
-            if (!IsGroupPresent(p))
-            {
-                GroupDatacs group = new GroupDatacs("qw", "as", "zx");
-                Create(group);
-                manager.Navigator.GoToGroupsPage();
-            }
             SelectGroup(p);
             RemoveGroup();
             ReturnToGroupPage();

@@ -13,7 +13,15 @@ namespace addressbook_web_tets
         [Test]
         public void ContactRemovalTest()
         {
-            app.Contacts.Remove(1) ;
+            // Проверяем наличие контакта перед его удалением
+            if (!app.Contacts.IsContactPresent(1))
+            {
+                ContactDatas contact = new ContactDatas("n1", "l1");
+                app.Contacts.Create(contact);
+            }
+
+            // Удаляем контакт
+            app.Contacts.Remove(1);
         }
     }
 }

@@ -13,8 +13,16 @@ namespace addressbook_web_tets
         [Test]
         public void ContactModificationTest()
         {
-            ContactDatas newData = new ContactDatas("n1", "l1");
-            app.Contacts.Modify(1, newData);
+            // Проверяем наличие контакта перед его модификацией
+            if (!app.Contacts.IsContactPresent(1))
+            {
+                ContactDatas newData = new ContactDatas("n1", "l1");
+                app.Contacts.Create(newData);
+            }
+
+            // Модифицируем контакт
+            ContactDatas newDataForModification = new ContactDatas("newName", "newLastName");
+            app.Contacts.Modify(1, newDataForModification);
         }
     }
 }

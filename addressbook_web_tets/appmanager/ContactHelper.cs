@@ -27,13 +27,6 @@ namespace addressbook_web_tets
         public ContactHelper Modify(int v, ContactDatas newData)
         {
             manager.Navigator.ReturnToHomePage();
-
-            if (!IsContactPresent(v))
-            {
-                Create(newData);
-                return this;
-            }
-
             SelectContact(v);
             FillContactForm(newData);
             SubmitContactModification();
@@ -46,12 +39,6 @@ namespace addressbook_web_tets
         public ContactHelper Remove(int p)
         {
             manager.Navigator.ReturnToHomePage();
-            if (!IsContactDeletePresent(p))
-            {
-                ContactDatas contact = new ContactDatas("n1", "l1");
-                Create(contact);
-                manager.Navigator.ReturnToHomePage();
-            }
             SelectContactDelete(p);
             RemoveContact();
             manager.Navigator.ReturnToHomePage();
