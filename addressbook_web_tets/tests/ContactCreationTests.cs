@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
+using System.Linq;
+using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium;
 
 namespace addressbook_web_tets
 {
@@ -13,8 +17,15 @@ namespace addressbook_web_tets
         [Test]
         public void ContactTest()
         {
-            ContactDatas contact = new ContactDatas("n1", "l1");
+            ContactDatas contact = new ContactDatas("n100", "l100");
+            List<ContactDatas> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
-        } 
+            List<ContactDatas> newContacts = app.Contacts.GetContactList();
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            newContacts.Sort();
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
+
+        }
     }
 }

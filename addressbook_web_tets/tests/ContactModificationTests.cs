@@ -22,7 +22,15 @@ namespace addressbook_web_tets
 
             // Модифицируем контакт
             ContactDatas newDataForModification = new ContactDatas("newName", "newLastName");
+            List<ContactDatas> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Modify(1, newDataForModification);
+            List<ContactDatas> newContacts = app.Contacts.GetContactList();
+
+            oldContacts[1].FName = newDataForModification.FName;
+            oldContacts.Sort();
+            newContacts.Sort();
+                                 
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
         }
     }
 }

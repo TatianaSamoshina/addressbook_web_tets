@@ -56,7 +56,7 @@ namespace addressbook_web_tets
 
         public GroupHelper SelectGroup(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])["+ index + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])["+ (index+1) + "]")).Click();
             return this;
         }
 
@@ -102,6 +102,18 @@ namespace addressbook_web_tets
         {
             driver.FindElement(By.Name("submit")).Click();
             return this;
-        }      
+        }
+
+        public List<GroupDatacs> GetGroupList()
+        {
+            List<GroupDatacs> groups = new List<GroupDatacs>();
+            manager.Navigator.GoToGroupsPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupDatacs(element.Text, "", ""));
+            }
+            return groups;
+        }
     }
 }

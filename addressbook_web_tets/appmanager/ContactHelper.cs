@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using OpenQA.Selenium.Support.UI;
+using System.Threading;
 
 namespace addressbook_web_tets
 {
@@ -107,6 +108,28 @@ namespace addressbook_web_tets
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
             return this;
-        }      
+        }
+
+        public List<ContactDatas> GetContactList()
+        {
+            List<ContactDatas> contacts = new List<ContactDatas>();
+            manager.Navigator.ReturnToHomePage();
+            
+            IWebElement table = driver.FindElement(By.Id("maintable"));
+            ICollection<IWebElement> rows = table.FindElements(By.CssSelector("tbody tr[name='entry']"));
+
+
+            foreach (IWebElement row in rows)
+            {
+                // Получаем текст из ячеек Last name и First name
+                string lastName = row.FindElement(By.XPath("./td[2]")).Text;
+                string firstName = row.FindElement(By.XPath("./td[3]")).Text;
+
+                // Создаем экземпляр ContactDatas и добавляем его в список контактов
+                contacts.Add(new ContactDatas(firstName, lastName));
+            }
+            return contacts;
+        }
     }
+    
 }
