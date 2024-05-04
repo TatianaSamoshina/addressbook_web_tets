@@ -33,7 +33,6 @@ namespace addressbook_web_tets
             app.Auth.Login(account);
             //verification
             Assert.That(app.Auth.IsLoggedIn(account), Is.False, "Пользователь вошел в систему.");
-            //Assert.IsFalse(app.Auth.IsLoggedIn(account));
         }
     }
 }

@@ -20,12 +20,12 @@ namespace addressbook_web_tets
             ContactDatas contact = new ContactDatas("n100", "l100");
             List<ContactDatas> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
             List<ContactDatas> newContacts = app.Contacts.GetContactList();
             oldContacts.Add(contact);
             oldContacts.Sort();
             newContacts.Sort();
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
-
         }
     }
 }

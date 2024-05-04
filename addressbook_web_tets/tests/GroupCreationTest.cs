@@ -21,6 +21,7 @@ namespace addressbook_web_tets
             List<GroupDatacs> oldGroups = app.Groups.GetGroupList();
             //Создание группы
             app.Groups.Create(group);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
             //Список групп ПОСЛЕ
             List<GroupDatacs> newGroups = app.Groups.GetGroupList();
             oldGroups.Add(group);

@@ -29,7 +29,6 @@ namespace addressbook_web_tets
         }
 
 
-
         public bool IsLoggedIn(AccountData account)
         {
             return IsLoggedIn()

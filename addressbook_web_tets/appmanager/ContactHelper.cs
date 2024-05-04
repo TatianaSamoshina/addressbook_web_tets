@@ -21,7 +21,6 @@ namespace addressbook_web_tets
             SubmitContactCreation();
             manager.Navigator.ReturnToHomePage();
             //manager.Auth.Logout();
-
             return this;
         }
 
@@ -33,7 +32,6 @@ namespace addressbook_web_tets
             SubmitContactModification();
             manager.Navigator.ReturnToHomePage();
             //manager.Auth.Logout();
-
             return this;
         }
 
@@ -50,7 +48,7 @@ namespace addressbook_web_tets
 
         public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 1) + "]/td[8]/a/img")).Click();
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 2) + "]/td[8]/a/img")).Click();
             return this;
         }
 
@@ -81,19 +79,21 @@ namespace addressbook_web_tets
         }
         public ContactHelper SelectContactDelete(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
             return this;
         }
 
         public ContactHelper RemoveContact()
         {
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            contactCashe = null;
             return this;
         }
 
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCashe = null;
             return this;
         }
 
@@ -107,28 +107,40 @@ namespace addressbook_web_tets
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
+            contactCashe = null;
             return this;
         }
 
+        private List<ContactDatas> contactCashe = null;
         public List<ContactDatas> GetContactList()
         {
-            List<ContactDatas> contacts = new List<ContactDatas>();
-            manager.Navigator.ReturnToHomePage();
-            
-            IWebElement table = driver.FindElement(By.Id("maintable"));
-            ICollection<IWebElement> rows = table.FindElements(By.CssSelector("tbody tr[name='entry']"));
 
-
-            foreach (IWebElement row in rows)
+            if (contactCashe == null)
             {
-                // Получаем текст из ячеек Last name и First name
-                string lastName = row.FindElement(By.XPath("./td[2]")).Text;
-                string firstName = row.FindElement(By.XPath("./td[3]")).Text;
+                contactCashe = new List<ContactDatas>();
+                manager.Navigator.ReturnToHomePage();
+                IWebElement table = driver.FindElement(By.Id("maintable"));
+                ICollection<IWebElement> rows = table.FindElements(By.CssSelector("tbody tr[name='entry']"));
 
-                // Создаем экземпляр ContactDatas и добавляем его в список контактов
-                contacts.Add(new ContactDatas(firstName, lastName));
+                foreach (IWebElement row in rows)
+                {
+
+                    // Получаем текст из ячеек Last name и First name
+                    string lastName = row.FindElement(By.XPath("./td[2]")).Text;
+                    string firstName = row.FindElement(By.XPath("./td[3]")).Text;
+
+                    contactCashe.Add(new ContactDatas(firstName, lastName)
+                    {
+                        IdContact = row.FindElement(By.TagName("input")).GetAttribute("value")
+                    });
+                }
             }
-            return contacts;
+            return new List<ContactDatas>(contactCashe);
+        }
+
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.CssSelector("tbody tr[name='entry']")).Count;
         }
     }
     

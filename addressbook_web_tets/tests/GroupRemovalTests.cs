@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace addressbook_web_tets
 {
@@ -24,16 +23,19 @@ namespace addressbook_web_tets
             }
             //Список групп ДО
             List<GroupDatacs> oldGroups = app.Groups.GetGroupList();
-
             // Удаляем группу
             app.Groups.Remove(0);
-
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
             //Список групп ПОСЛЕ
             List<GroupDatacs> newGroups = app.Groups.GetGroupList();
-
+            GroupDatacs toBeRemoved = oldGroups[0];
             oldGroups.RemoveAt(0);
             //Проверка
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldGroups.SequenceEqual(newGroups));
+            foreach (GroupDatacs group in newGroups)
+            {
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(group.Id, toBeRemoved.Id);
+            }
         }
     }
 }

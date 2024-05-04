@@ -8,43 +8,35 @@ namespace addressbook_web_tets
 {
     public class ContactDatas: IEquatable<ContactDatas>, IComparable<ContactDatas>
     {
-        private string Fname;
-        private string Lname;
         public ContactDatas(string Fname, string Lname)
         {
-            this.Fname = Fname;
-            this.Lname = Lname;
+            FName = Fname;
+            LName = Lname;
         }
-        public string FName
-        {
-            get { return Fname; }
-            set { Fname = value; }
-        }
-        public string LName
-        {
-            get { return Lname; }
-            set { Lname = value; }
-        }
+        public string FName { get; set; }
 
+        public string LName { get; set; }
+  
+        public string IdContact { get; set; }
 
 
         public bool Equals(ContactDatas other)
         {
             if (Object.ReferenceEquals(other, null)) { return false; }
             if (Object.ReferenceEquals(this, other)) { return true; }
-            return Fname == other.Fname;
+            return FName == other.FName;
         }
 
         public int CompareTo(ContactDatas other)
         {
             if (Object.ReferenceEquals(other, null)) { return 1; }
-            return Fname.CompareTo(other.Fname);
+            return FName.CompareTo(other.FName);
         }
 
         public override int GetHashCode()
-        { return Fname.GetHashCode(); }
+        { return FName.GetHashCode(); }
 
         public override string ToString()
-        { return "name=" + Fname; }
+        { return "name=" + FName; }
     }
 }

@@ -8,20 +8,18 @@ namespace addressbook_web_tets
 {
     public class GroupDatacs: IEquatable<GroupDatacs>, IComparable<GroupDatacs>
     {
-        private string name;
-        private string header;
-        private string footer;
         public GroupDatacs(string name, string header, string footer)
         {
-            this.name = name;
-            this.header = header;
-            this.footer = footer;
+            Name = name;
+            Header = header;
+            Footer = footer;
         }
-        public string Name 
-        { 
-            get { return name; }
-            set { name=value; }
-        }
+        public string Name { get; set; }
+        public string Header { get; set; }
+        public string Footer { get; set; }
+        public string Id { get; set; }
+
+
         public bool Equals (GroupDatacs other) 
         {
             if (Object.ReferenceEquals(other, null)) { return false; }
@@ -40,16 +38,5 @@ namespace addressbook_web_tets
 
         public override string ToString()
         { return "name=" + Name; }
-
-        public string Header
-        {
-            get { return header; }
-            set { header = value; }
-        }
-        public string Footer
-        {
-            get { return footer; }
-            set {  footer = value; }
-        }
     }
 }

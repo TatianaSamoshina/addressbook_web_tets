@@ -20,14 +20,19 @@ namespace addressbook_web_tets
                 ContactDatas contact = new ContactDatas("n1", "l1");
                 app.Contacts.Create(contact);
             }
-
             List<ContactDatas> oldContacts = app.Contacts.GetContactList();
             // Удаляем контакт
-            app.Contacts.Remove(1);
-            List<ContactDatas> newContacts = app.Contacts.GetContactList();
-            oldContacts.RemoveAt(1);
+            app.Contacts.Remove(0);
             //Проверка
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
+            List<ContactDatas> newContacts = app.Contacts.GetContactList();
+            ContactDatas toBeRemoved = oldContacts[0];
+            oldContacts.RemoveAt(0);
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
+            foreach (ContactDatas contact in newContacts)
+            {
+                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(contact.IdContact, toBeRemoved.IdContact);
+            }
         }
     }
 }

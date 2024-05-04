@@ -18,7 +18,6 @@ namespace addressbook_web_tets
         [SetUp]
         public void SetupApplicationManager()
         {
-            //app = ApplicationManager.GetInstance();
             app = new ApplicationManager();
             app.Navigator.OpenHomePage();
         }
@@ -27,7 +26,6 @@ namespace addressbook_web_tets
         public void TeardownTest()
         {
             app.Stop();
-            //ApplicationManager.GetInstance().Stop();
         }
 
     }

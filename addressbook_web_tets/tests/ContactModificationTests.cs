@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -19,18 +20,24 @@ namespace addressbook_web_tets
                 ContactDatas newData = new ContactDatas("n1", "l1");
                 app.Contacts.Create(newData);
             }
-
             // Модифицируем контакт
             ContactDatas newDataForModification = new ContactDatas("newName", "newLastName");
             List<ContactDatas> oldContacts = app.Contacts.GetContactList();
-            app.Contacts.Modify(1, newDataForModification);
+            ContactDatas oldData = oldContacts[0];
+            app.Contacts.Modify(0, newDataForModification);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
             List<ContactDatas> newContacts = app.Contacts.GetContactList();
-
-            oldContacts[1].FName = newDataForModification.FName;
+            oldContacts[0].FName = newDataForModification.FName;
             oldContacts.Sort();
-            newContacts.Sort();
-                                 
+            newContacts.Sort();                                
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
+            foreach (ContactDatas contact in newContacts)
+            {
+                if (contact.IdContact == oldData.IdContact)
+                {
+                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(newDataForModification.FName, contact.FName);
+                }
+            }
         }
     }
 }
