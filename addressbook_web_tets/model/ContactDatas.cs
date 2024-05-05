@@ -30,7 +30,19 @@ namespace addressbook_web_tets
         public int CompareTo(ContactDatas other)
         {
             if (Object.ReferenceEquals(other, null)) { return 1; }
-            return FName.CompareTo(other.FName);
+
+            // Сначала сравниваем имена
+            int nameComparison = FName.CompareTo(other.FName);
+            if (nameComparison != 0)
+            {
+                // Если имена не равны, возвращаем результат сравнения имен
+                return nameComparison;
+            }
+            else
+            {
+                // Если имена равны, сравниваем фамилии
+                return LName.CompareTo(other.LName);
+            }
         }
 
         public override int GetHashCode()
