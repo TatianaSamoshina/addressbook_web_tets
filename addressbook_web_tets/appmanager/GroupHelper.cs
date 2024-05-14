@@ -21,7 +21,6 @@ namespace addressbook_web_tets
             FillGroupForm(group);
             SubmitGroupCreation();
             ReturnToGroupPage();
-            //manager.Auth.Logout();
             return this;
         }
         public GroupHelper Modify(int v, GroupDatacs newData)
