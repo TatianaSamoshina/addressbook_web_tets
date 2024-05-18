@@ -151,12 +151,64 @@ namespace addressbook_web_tets
             string firstName = cells[2].Text;
             string address = cells[3].Text;
             string allPhones = cells[5].Text;
+            string allEmails = cells[4].Text;
 
             return new ContactDatas(firstName, lastName)
             {
                 Address = address,
-                AllPhones = allPhones
+                AllPhones = allPhones,
+                AllEmails = allEmails
             };
+        }
+
+        public ContactDatas GetContactInformationFromProperties(int index)
+        {
+            manager.Navigator.ReturnToHomePage();
+            InitContactProperties(0);
+
+            IWebElement contentElement = driver.FindElement(By.Id("content"));
+            string innerText = contentElement.Text;
+
+            string[] lines = innerText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Debug: print each line to the console
+            /*Console.WriteLine("Total lines: " + lines.Length);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                Console.WriteLine($"Line {i}: '{lines[i]}' (Length: {lines[i].Length})");
+            }*/
+
+            if (lines.Length < 5)
+            {
+                throw new IndexOutOfRangeException("The content does not contain enough lines.");
+            }
+
+            string[] values = lines[0].Split(' ');
+
+            string firstName = values.Length > 0 ? values[0] : "";
+            string lastName = values.Length > 1 ? values[1] : "";
+            string address = lines[1];
+
+            string homePhone = lines.Length > 2 && lines[2].StartsWith("H:") ? lines[2].Substring(3).Trim() : "";
+            string mobilePhone = lines.Length > 3 && lines[3].StartsWith("M:") ? lines[3].Substring(3).Trim() : "";
+            string workPhone = lines.Length > 4 && lines[4].StartsWith("W:") ? lines[4].Substring(3).Trim() : "";
+
+            string email = lines[5];
+            string email2 = lines[6];
+            string email3 = lines[7];
+
+
+            return new ContactDatas(firstName, lastName)
+            {
+                Address = address,
+                HomePhone = homePhone,
+                MobilePhone = mobilePhone,
+                WorkPhone = workPhone,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3
+            };
+
         }
 
         public ContactDatas GetContactInformationFromEditForm(int index)
@@ -169,21 +221,35 @@ namespace addressbook_web_tets
             string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
             string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
             string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
 
             return new ContactDatas(firstName, lastName)
             {
                 Address=address,
                 HomePhone=homePhone,
                 MobilePhone=mobilePhone,
-                WorkPhone=workPhone
+                WorkPhone=workPhone,
+                Email= email,
+                Email2 = email2,
+                Email3 = email3
             };
         }
+
         /*public void InitContactModification(int index)
         {
             driver.FindElements(By.Name("entry"))[index]
                 .FindElements(By.TagName("td"))[7]
                 .FindElement(By.TagName("a")).Click();
         }*/
+
+        public void InitContactProperties(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+        }
 
         public int GetNumberOfSearchResults()
         {
@@ -192,6 +258,5 @@ namespace addressbook_web_tets
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
         }
-    }
-    
+    }   
 }

@@ -10,6 +10,7 @@ namespace addressbook_web_tets
     public class ContactDatas: IEquatable<ContactDatas>, IComparable<ContactDatas>
     {
         private string allPhones;
+        private string allEmails;
 
         public ContactDatas(string Fname, string Lname)
         {
@@ -22,6 +23,9 @@ namespace addressbook_web_tets
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
         public string WorkPhone { get; set; }
+        public string Email { get; set; }
+        public string Email2 { get; set; }
+        public string Email3 { get; set; }
         public string AllPhones
         {
             get 
@@ -32,10 +36,20 @@ namespace addressbook_web_tets
             set { allPhones = value; } 
         }
 
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null) { return allEmails; }
+                else { return (CleanUp(Email) + CleanUp(Email2) + CleanUp(Email3)).Trim(); }
+            }
+            set { allEmails = value; }
+        }
+
         private string CleanUp(string phone)
         {
             if (phone == null || phone == "") { return ""; }
-            return Regex.Replace(phone, "[ -()]", "") + "\r\n";
+            return Regex.Replace(phone, "[ ()-]", "") + "\r\n";
         }
 
         public string IdContact { get; set; }
