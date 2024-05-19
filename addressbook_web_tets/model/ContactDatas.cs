@@ -88,6 +88,6 @@ namespace addressbook_web_tets
         { return FName.GetHashCode(); }
 
         public override string ToString()
-        { return "name=" + FName; }
+        { return "Fname=" + FName + "\nLname =" + LName; }
     }
 }

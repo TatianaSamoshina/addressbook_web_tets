@@ -14,10 +14,20 @@ namespace addressbook_web_tets
     [TestFixture]
     public class ContactCreationTests : AuthTestBase
     {
-        [Test]
-        public void ContactTest()
+        public static IEnumerable<ContactDatas> RandomContactDataProvider()
         {
-            ContactDatas contact = new ContactDatas("n100", "l100");
+            List<ContactDatas> contact = new List<ContactDatas>();
+            for (int i = 0; i < 5; i++)
+            {
+                contact.Add(new ContactDatas(GenerateRandomString(20), GenerateRandomString(20)));
+            }
+            return contact;
+        }
+
+        [Test, TestCaseSource("RandomContactDataProvider")]
+        public void ContactTest(ContactDatas contact)
+        {
+            //ContactDatas contact = new ContactDatas("n100", "l100");
             List<ContactDatas> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());

@@ -13,10 +13,26 @@ namespace addressbook_web_tets
     [TestFixture]
     public class GroupCreationTests : AuthTestBase
     {
-        [Test]
-        public void GroupCreationTest()
+        public static IEnumerable<GroupDatacs> RandomGroupDataProvider()
         {
-            GroupDatacs group = new GroupDatacs("qw", "as", "zx");
+            List<GroupDatacs> groups = new List<GroupDatacs>();
+            for (int i = 0; i<5; i++)
+            {
+                groups.Add(new GroupDatacs(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100))
+                /*{
+                    Header = GenerateRandomString(100),
+                    Footer = GenerateRandomString(100)
+                }*/);
+            }
+
+            return groups;
+        }
+
+ 
+        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public void GroupCreationTest(GroupDatacs group)
+        {
+            //GroupDatacs group = new GroupDatacs("qw", "as", "zx");
             //Список групп ДО
             List<GroupDatacs> oldGroups = app.Groups.GetGroupList();
             //Создание группы
