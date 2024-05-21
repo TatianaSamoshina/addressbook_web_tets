@@ -122,7 +122,6 @@ namespace addressbook_web_tets
 
                 foreach (IWebElement row in rows)
                 {
-
                     // Получаем текст из ячеек Last name и First name
                     string lastName = row.FindElement(By.XPath("./td[2]")).Text;
                     string firstName = row.FindElement(By.XPath("./td[3]")).Text;
@@ -168,15 +167,7 @@ namespace addressbook_web_tets
 
             IWebElement contentElement = driver.FindElement(By.Id("content"));
             string innerText = contentElement.Text;
-
             string[] lines = innerText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Debug: print each line to the console
-            /*Console.WriteLine("Total lines: " + lines.Length);
-            for (int i = 0; i < lines.Length; i++)
-            {
-                Console.WriteLine($"Line {i}: '{lines[i]}' (Length: {lines[i].Length})");
-            }*/
 
             if (lines.Length < 5)
             {
@@ -184,19 +175,15 @@ namespace addressbook_web_tets
             }
 
             string[] values = lines[0].Split(' ');
-
             string firstName = values.Length > 0 ? values[0] : "";
             string lastName = values.Length > 1 ? values[1] : "";
             string address = lines[1];
-
             string homePhone = lines.Length > 2 && lines[2].StartsWith("H:") ? lines[2].Substring(3).Trim() : "";
             string mobilePhone = lines.Length > 3 && lines[3].StartsWith("M:") ? lines[3].Substring(3).Trim() : "";
             string workPhone = lines.Length > 4 && lines[4].StartsWith("W:") ? lines[4].Substring(3).Trim() : "";
-
             string email = lines[5];
             string email2 = lines[6];
             string email3 = lines[7];
-
 
             return new ContactDatas(firstName, lastName)
             {
@@ -207,8 +194,7 @@ namespace addressbook_web_tets
                 Email = email,
                 Email2 = email2,
                 Email3 = email3
-            };
-
+            };          
         }
 
         public ContactDatas GetContactInformationFromEditForm(int index)
@@ -257,6 +243,37 @@ namespace addressbook_web_tets
             string text = driver.FindElement(By.Id("search_count")).Text;
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
+        }
+
+        public string FormatContactDetails(ContactDatas contact)
+        {
+            string fullName = $"{contact.FName} {contact.LName}".Trim();
+            string address = string.IsNullOrWhiteSpace(contact.Address) ? "" : contact.Address.Trim();
+            string phones = string.Join("\n",
+                new string[] {
+                    CleanUp(contact.HomePhone, "H:"),
+                    CleanUp(contact.MobilePhone, "M:"),
+                    CleanUp(contact.WorkPhone, "W:")
+                }.Where(p => !string.IsNullOrWhiteSpace(p))).Trim();
+            string emails = string.Join("\n",
+                new string[] { contact.Email, contact.Email2, contact.Email3 }
+                .Where(e => !string.IsNullOrWhiteSpace(e))).Trim();
+
+            return $"{fullName}\n{address}\n{phones}\n{emails}".Trim();
+        }
+        public string GetContactInformationFromPropertiesAsText(int index)
+        {
+            manager.Navigator.ReturnToHomePage();
+            InitContactProperties(index);
+            IWebElement contentElement = driver.FindElement(By.Id("content"));
+            string innerText = contentElement.Text;
+            return innerText;
+        }
+
+        private string CleanUp(string value, string prefix = "")
+        {
+            if (string.IsNullOrEmpty(value)) return "";
+            return $"{prefix}{Regex.Replace(value, "[ ()-]", "")}";
         }
     }   
 }

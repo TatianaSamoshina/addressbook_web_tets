@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Linq;
+using System.IO;
 
 namespace addressbook_web_tets
 {
@@ -27,9 +28,21 @@ namespace addressbook_web_tets
 
             return groups;
         }
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+        public static IEnumerable<GroupDatacs> GroupDataFromFile()
+        {
+            List<GroupDatacs> groups = new List<GroupDatacs>();
+            string[] lines = File.ReadAllLines(@"groups.csv");
+            foreach (string l in lines)
+            {
+                string[] parts = l.Split(',');
+                groups.Add(new GroupDatacs(parts[0], parts[1], parts[2]));
+            }
+            return groups;
+        }
 
- 
-        [Test, TestCaseSource("RandomGroupDataProvider")]
+
+        [Test, TestCaseSource("GroupDataFromFile")]
         public void GroupCreationTest(GroupDatacs group)
         {
             //GroupDatacs group = new GroupDatacs("qw", "as", "zx");

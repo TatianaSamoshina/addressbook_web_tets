@@ -28,13 +28,11 @@ namespace addressbook_web_tets
         [Test]
         public void TestContactInformation2()
         {
-            ContactDatas fromProperties = app.Contacts.GetContactInformationFromProperties(1);
             ContactDatas fromForm = app.Contacts.GetContactInformationFromEditForm(1);
-            //verification
-            Assert.AreEqual(fromProperties, fromForm);
-            Assert.AreEqual(fromProperties.Address, fromForm.Address);
-            Assert.AreEqual(fromProperties.AllPhones, fromForm.AllPhones);
-            Assert.AreEqual(fromProperties.AllEmails, fromForm.AllEmails);
+            string expected = app.Contacts.FormatContactDetails(fromForm);
+            string actual = app.Contacts.GetContactInformationFromPropertiesAsText(1);
+            // verification
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace addressbook_web_tets
         private string CleanUp(string phone)
         {
             if (phone == null || phone == "") { return ""; }
-            return Regex.Replace(phone, "[ ()-]", "") + "\r\n";
+            return Regex.Replace(phone, "[ ()-]", "") + "\n";
         }
 
         public string IdContact { get; set; }
@@ -59,10 +59,7 @@ namespace addressbook_web_tets
         {
             if (Object.ReferenceEquals(other, null)) { return false; }
             if (Object.ReferenceEquals(this, other)) { return true; }
-            return FName == other.FName //&&
-                   /*LName == other.LName &&
-                   Address == other.Address &&
-                   AllPhones == other.AllPhones*/;
+            return FName == other.FName;
         }
 
 
@@ -73,14 +70,12 @@ namespace addressbook_web_tets
             // Сначала сравниваем имена
             int nameComparison = FName.CompareTo(other.FName);
             if (nameComparison != 0)
-            {
-                // Если имена не равны, возвращаем результат сравнения имен
-                return nameComparison;
+            {               
+                return nameComparison;// Если имена не равны, возвращаем результат сравнения имен
             }
             else
-            {
-                // Если имена равны, сравниваем фамилии
-                return LName.CompareTo(other.LName);
+            {               
+                return LName.CompareTo(other.LName);// Если имена равны, сравниваем фамилии
             }
         }
 
