@@ -9,6 +9,7 @@ using System.Reflection;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Security.Policy;
 
 namespace addressbook_web_tets
 {
@@ -160,7 +161,7 @@ namespace addressbook_web_tets
             };
         }
 
-        public ContactDatas GetContactInformationFromProperties(int index)
+        /*public ContactDatas GetContactInformationFromProperties(int index)
         {
             manager.Navigator.ReturnToHomePage();
             InitContactProperties(0);
@@ -195,7 +196,7 @@ namespace addressbook_web_tets
                 Email2 = email2,
                 Email3 = email3
             };          
-        }
+        }*/
 
         public ContactDatas GetContactInformationFromEditForm(int index)
         {
@@ -246,20 +247,40 @@ namespace addressbook_web_tets
         }
 
         public string FormatContactDetails(ContactDatas contact)
-        {
-            string fullName = $"{contact.FName} {contact.LName}".Trim();
-            string address = string.IsNullOrWhiteSpace(contact.Address) ? "" : contact.Address.Trim();
-            string phones = string.Join("\n",
+        {                      
+            string fullName = $"{contact.FName} {contact.LName}".Trim(); // Имя
+            string address = string.IsNullOrWhiteSpace(contact.Address) ? "" : contact.Address.Trim(); //адрес, если не пустой
+            string phones = string.Join("\n", //телефоны + пробел после префиксов
                 new string[] {
-                    CleanUp(contact.HomePhone, "H:"),
-                    CleanUp(contact.MobilePhone, "M:"),
-                    CleanUp(contact.WorkPhone, "W:")
-                }.Where(p => !string.IsNullOrWhiteSpace(p))).Trim();
-            string emails = string.Join("\n",
+            CleanUp(contact.HomePhone, "H: "),
+            CleanUp(contact.MobilePhone, "M: "),
+            CleanUp(contact.WorkPhone, "W: ")
+                }.Where(p => !string.IsNullOrWhiteSpace(p))).Trim();           
+            string emails = string.Join("\n", // email'ы
                 new string[] { contact.Email, contact.Email2, contact.Email3 }
                 .Where(e => !string.IsNullOrWhiteSpace(e))).Trim();
 
-            return $"{fullName}\n{address}\n{phones}\n{emails}".Trim();
+
+            StringBuilder result = new StringBuilder();
+
+            result.Append(fullName);
+            if (!string.IsNullOrWhiteSpace(address))
+            {
+                if (result.Length > 0) result.Append("\n");
+                result.Append(address);
+            }
+            if (!string.IsNullOrWhiteSpace(phones))
+            {
+                if (result.Length > 0) result.Append("\n\n");
+                result.Append(phones);
+            }
+            if (!string.IsNullOrWhiteSpace(emails))
+            {
+                if (result.Length > 0) result.Append("\n\n");
+                result.Append(emails);
+            }
+
+            return result.ToString().Trim();
         }
         public string GetContactInformationFromPropertiesAsText(int index)
         {
@@ -270,10 +291,13 @@ namespace addressbook_web_tets
             return innerText;
         }
 
-        private string CleanUp(string value, string prefix = "")
+        private string CleanUp(string phone, string prefix)
         {
-            if (string.IsNullOrEmpty(value)) return "";
-            return $"{prefix}{Regex.Replace(value, "[ ()-]", "")}";
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                return "";
+            }
+            return $"{prefix}{phone.Trim()}";
         }
     }   
 }
