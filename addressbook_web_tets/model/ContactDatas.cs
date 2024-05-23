@@ -17,6 +17,9 @@ namespace addressbook_web_tets
             FName = Fname;
             LName = Lname;
         }
+        public ContactDatas()
+        {
+        }
         public string FName { get; set; }
         public string LName { get; set; }
         public string Address { get; set; }

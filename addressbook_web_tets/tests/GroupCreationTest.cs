@@ -19,16 +19,12 @@ namespace addressbook_web_tets
             List<GroupDatacs> groups = new List<GroupDatacs>();
             for (int i = 0; i<5; i++)
             {
-                groups.Add(new GroupDatacs(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100))
-                /*{
-                    Header = GenerateRandomString(100),
-                    Footer = GenerateRandomString(100)
-                }*/);
+                groups.Add(new GroupDatacs(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100)));
             }
 
             return groups;
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+
         public static IEnumerable<GroupDatacs> GroupDataFromFile()
         {
             List<GroupDatacs> groups = new List<GroupDatacs>();

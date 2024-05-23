@@ -8,6 +8,7 @@ using NUnit.Framework;
 using System.Linq;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
+using System.IO;
 
 namespace addressbook_web_tets
 {
@@ -20,6 +21,18 @@ namespace addressbook_web_tets
             for (int i = 0; i < 5; i++)
             {
                 contact.Add(new ContactDatas(GenerateRandomString(20), GenerateRandomString(20)));
+            }
+            return contact;
+        }
+
+        public static IEnumerable<ContactDatas> ContactDataFromFile()
+        {
+            List<ContactDatas> contact = new List<ContactDatas>();
+            string[] lines = File.ReadAllLines(@"contacts.csv");
+            foreach (string l in lines)
+            {
+                string[] parts = l.Split(',');
+                contact.Add(new ContactDatas(parts[0], parts[1]));
             }
             return contact;
         }

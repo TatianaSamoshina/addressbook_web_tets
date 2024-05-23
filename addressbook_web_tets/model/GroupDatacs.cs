@@ -14,6 +14,9 @@ namespace addressbook_web_tets
             Header = header;
             Footer = footer;
         }
+        public GroupDatacs()
+        {
+        }
         public string Name { get; set; }
         public string Header { get; set; }
         public string Footer { get; set; }
