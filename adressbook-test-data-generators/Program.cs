@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace tests_data_generators
 {
@@ -48,6 +49,10 @@ namespace tests_data_generators
                         {
                             WriteGroupsToXmlFile(groups, writer);
                         }
+                        else if (format == "json")
+                        {
+                            WriteGroupsToJsonFile(groups, writer);
+                        }
                         else
                         {
                             Console.WriteLine("Invalid format provided. Supported formats are 'csv' and 'xml'.");
@@ -64,9 +69,13 @@ namespace tests_data_generators
                         {
                             WriteContactsToXmlFile(contacts, writer);
                         }
+                        else if (format == "json")
+                        {
+                            WriteContactsToJsonFile(contacts, writer);
+                        }
                         else
                         {
-                            Console.WriteLine("Invalid format provided. Supported formats are 'csv' and 'xml'.");
+                            Console.WriteLine("Invalid format provided. Supported formats are 'csv','xml' and 'json'.");
                         }
                     }
                     else
@@ -118,6 +127,10 @@ namespace tests_data_generators
         {
             new XmlSerializer(typeof(List<GroupDatacs>)).Serialize(writer, groups);
         }
+        static void WriteGroupsToJsonFile(List<GroupDatacs> groups, StreamWriter writer)
+        {
+            writer.Write(JsonConvert.SerializeObject(groups, Newtonsoft.Json.Formatting.Indented));
+        }
 
         static void WriteContactsToCsvFile(List<ContactDatas> contacts, StreamWriter writer)
         {
@@ -130,6 +143,10 @@ namespace tests_data_generators
         static void WriteContactsToXmlFile(List<ContactDatas> contacts, StreamWriter writer)
         {
             new XmlSerializer(typeof(List<ContactDatas>)).Serialize(writer, contacts);
+        }
+        static void WriteContactsToJsonFile(List<ContactDatas> contacts, StreamWriter writer)
+        {
+            writer.Write(JsonConvert.SerializeObject(contacts, Newtonsoft.Json.Formatting.Indented));
         }
     }
 }

@@ -9,6 +9,8 @@ using System.Linq;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using System.IO;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace addressbook_web_tets
 {
@@ -25,7 +27,7 @@ namespace addressbook_web_tets
             return contact;
         }
 
-        public static IEnumerable<ContactDatas> ContactDataFromFile()
+        public static IEnumerable<ContactDatas> ContactDataFromCsvFile()
         {
             List<ContactDatas> contact = new List<ContactDatas>();
             string[] lines = File.ReadAllLines(@"contacts.csv");
@@ -37,7 +39,18 @@ namespace addressbook_web_tets
             return contact;
         }
 
-        [Test, TestCaseSource("RandomContactDataProvider")]
+        public static IEnumerable<ContactDatas> ContactDataFromXmlFile()
+        {
+            return (List<ContactDatas>)
+                new XmlSerializer(typeof(List<ContactDatas>)).Deserialize(new StreamReader(@"contacts.xml"));
+        }
+        public static IEnumerable<ContactDatas> ContactDataFromJsonFile()
+        {
+            return JsonConvert.DeserializeObject<List<ContactDatas>>(File.ReadAllText(@"contacts.json"));
+        }
+
+
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactTest(ContactDatas contact)
         {
             List<ContactDatas> oldContacts = app.Contacts.GetContactList();

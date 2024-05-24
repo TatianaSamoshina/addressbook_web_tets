@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Linq;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace addressbook_web_tets
 {
@@ -24,7 +27,7 @@ namespace addressbook_web_tets
             return groups;
         }
 
-        public static IEnumerable<GroupDatacs> GroupDataFromFile()
+        public static IEnumerable<GroupDatacs> GroupDataFromCsvFile()
         {
             List<GroupDatacs> groups = new List<GroupDatacs>();
             string[] lines = File.ReadAllLines(@"groups.csv");
@@ -36,8 +39,18 @@ namespace addressbook_web_tets
             return groups;
         }
 
+        public static IEnumerable<GroupDatacs> GroupDataFromXmlFile()
+        {
+            return (List<GroupDatacs>) 
+                new XmlSerializer(typeof(List<GroupDatacs>)).Deserialize(new StreamReader(@"groups.xml"));
+        }
+        public static IEnumerable<GroupDatacs> GroupDataFromJsonFile()
+        {
+            return JsonConvert.DeserializeObject<List<GroupDatacs>>(File.ReadAllText(@"groups.json"));
+        }
 
-        [Test, TestCaseSource("GroupDataFromFile")]
+
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void GroupCreationTest(GroupDatacs group)
         {
             List<GroupDatacs> oldGroups = app.Groups.GetGroupList();

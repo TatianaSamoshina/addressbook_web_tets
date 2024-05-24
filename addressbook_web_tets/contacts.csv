@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfContactDatas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ContactDatas>
+    <FName>R%,+$BD!V`</FName>
+    <LName>A7;&lt;]O-:*H</LName>
+    <AllPhones />
+    <AllEmails />
+  </ContactDatas>
+  <ContactDatas>
+    <FName>`%[</FName>
+    <LName>__O%(LHW</LName>
+    <AllPhones />
+    <AllEmails />
+  </ContactDatas>
+  <ContactDatas>
+    <FName>62X+$^?/2</FName>
+    <LName>OM!</LName>
+    <AllPhones />
+    <AllEmails />
+  </ContactDatas>
+  <ContactDatas>
+    <FName>4=6$MI7</FName>
+    <LName>:#X</LName>
+    <AllPhones />
+    <AllEmails />
+  </ContactDatas>
+</ArrayOfContactDatas>
