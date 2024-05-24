@@ -21,7 +21,6 @@ namespace addressbook_web_tets
             {
                 groups.Add(new GroupDatacs(GenerateRandomString(30), GenerateRandomString(100), GenerateRandomString(100)));
             }
-
             return groups;
         }
 
@@ -41,18 +40,13 @@ namespace addressbook_web_tets
         [Test, TestCaseSource("GroupDataFromFile")]
         public void GroupCreationTest(GroupDatacs group)
         {
-            //GroupDatacs group = new GroupDatacs("qw", "as", "zx");
-            //Список групп ДО
             List<GroupDatacs> oldGroups = app.Groups.GetGroupList();
-            //Создание группы
             app.Groups.Create(group);
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
-            //Список групп ПОСЛЕ
             List<GroupDatacs> newGroups = app.Groups.GetGroupList();
             oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
-            //Проверка создания
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldGroups.SequenceEqual(newGroups));
         }
     }
