@@ -40,7 +40,6 @@ namespace addressbook_web_tets
         [Test, TestCaseSource("RandomContactDataProvider")]
         public void ContactTest(ContactDatas contact)
         {
-            //ContactDatas contact = new ContactDatas("n100", "l100");
             List<ContactDatas> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());

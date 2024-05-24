@@ -81,7 +81,6 @@ namespace addressbook_web_tets
                 return LName.CompareTo(other.LName);// Если имена равны, сравниваем фамилии
             }
         }
-
         public override int GetHashCode()
         { return FName.GetHashCode(); }
 
