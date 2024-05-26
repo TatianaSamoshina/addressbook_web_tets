@@ -1,15 +1,13 @@
 ﻿using OpenQA.Selenium;
-//using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using System.Threading.Tasks;
-using System.Reflection;
-using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using System.Text.RegularExpressions;
-using System.Security.Policy;
+//using System.Security.Policy;
+//using System.Reflection;
+using OpenQA.Selenium.Support.UI;
 
 namespace addressbook_web_tets
 {
@@ -75,7 +73,6 @@ namespace addressbook_web_tets
         }
 
 
-
         public ContactHelper SelectContact(int index)
         {
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 2) + "]/td[8]/a/img")).Click();
@@ -95,10 +92,7 @@ namespace addressbook_web_tets
                 driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 1) + "]/td[8]/a/img"));
                 return true;
             }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            catch (NoSuchElementException)  {  return false; }
         }
     
         public bool IsContactDeletePresent(int index)
@@ -108,16 +102,8 @@ namespace addressbook_web_tets
                 driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]"));
                 return true;
             }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            catch (NoSuchElementException) { return false; }
         }
-        /*public ContactHelper SelectContactDelete(int index)
-        {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
-            return this;
-        }*/
 
         public ContactHelper RemoveContact()
         {
@@ -132,7 +118,6 @@ namespace addressbook_web_tets
             contactCashe = null;
             return this;
         }
-
 
         public ContactHelper FillContactForm(ContactDatas contact)
         {
@@ -297,6 +282,58 @@ namespace addressbook_web_tets
                 return "";
             }
             return $"{prefix}{phone.Trim()}";
+        }
+
+        public void AddContactToGroup(ContactDatas contact, GroupDatacs group)
+        {
+            manager.Navigator.ReturnToHomePage();
+            ClearGroupFilter();
+            SelectContactDelete(contact.IdContact);
+            SelectGroupToAdd(group.Name);
+            CommitAddContactToGroup();
+        }
+
+        public void CommitAddContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
+
+        public void DeleteContactToGroup(ContactDatas contact, GroupDatacs group)
+        {
+            manager.Navigator.ReturnToHomePage();
+            SelectGroupFilter(group.Name);
+            Thread.Sleep(2000); // Задержка в 2 секунды для обновления страницы
+            Console.WriteLine($"Attempting to find contact with Id {contact.IdContact} in group {group.Name}");
+            IWebElement contactElement = driver.FindElement(By.XPath("//input[@name='selected[]']")); //выбрать первый контакт в группе
+            string contactId = contactElement.GetAttribute("value"); //значение атрибута value для первого контакта
+            Console.WriteLine($"First contact in group has Id {contactId}");       
+            RemoveContactFromGroup(contactId); // Выбор первого контакта
+            RemoveContact();
+        }
+
+        private void RemoveContactFromGroup(string index)
+        {
+            driver.FindElement(By.XPath($"//input[@name='selected[]' and @value='{index}']")).Click();
+        }
+
+        public void SelectContactDeleteToGroup(string idContact)
+        {
+            driver.FindElement(By.XPath("//input[@name='selected[]' and @value='" + idContact + "']")).Click();
+        }
+
+        public void SelectGroupFilter(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
         }
     }   
 }

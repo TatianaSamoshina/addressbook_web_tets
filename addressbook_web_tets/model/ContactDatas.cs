@@ -1,8 +1,5 @@
 ﻿using System;
-//using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using LinqToDB.Mapping;
 using System.Collections.Generic;
@@ -20,29 +17,38 @@ namespace addressbook_web_tets
             FName = Fname;
             LName = Lname;
         }
-        public ContactDatas()
-        {
-        }
+        public ContactDatas() { }
+
         [Column(Name = "firstname")]
         public string FName { get; set; }
+        
         [Column(Name = "lastname")]
         public string LName { get; set; }
+        
         [Column(Name = "address")]
         public string Address { get; set; }
+        
         [Column(Name = "home")]
         public string HomePhone { get; set; }
+        
         [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
+        
         [Column(Name = "work")]
         public string WorkPhone { get; set; }
+        
         [Column(Name = "email")]
         public string Email { get; set; }
+        
         [Column(Name = "email2")]
         public string Email2 { get; set; }
+        
         [Column(Name = "email3")]
         public string Email3 { get; set; }
+        
         [Column(Name = "id"), PrimaryKey, Identity]
         public string IdContact { get; set; }
+        
         public string AllPhones
         {
             get 
@@ -69,16 +75,12 @@ namespace addressbook_web_tets
             return Regex.Replace(phone, "[ ()-]", "") + "\n";
         }
 
-
-
-
         public bool Equals(ContactDatas other)
         {
             if (Object.ReferenceEquals(other, null)) { return false; }
             if (Object.ReferenceEquals(this, other)) { return true; }
             return FName == other.FName;
         }
-
 
         public int CompareTo(ContactDatas other)
         {
@@ -95,6 +97,7 @@ namespace addressbook_web_tets
                 return LName.CompareTo(other.LName);// Если имена равны, сравниваем фамилии
             }
         }
+        
         public override int GetHashCode()
         { return FName.GetHashCode(); }
 
