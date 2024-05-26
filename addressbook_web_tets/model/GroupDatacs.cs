@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LinqToDB.Mapping;
 
 namespace addressbook_web_tets
@@ -16,15 +14,17 @@ namespace addressbook_web_tets
             Header = header;
             Footer = footer;
         }
-        public GroupDatacs()
-        {
-        }
+        public GroupDatacs()  { }
+
         [Column (Name = "group_name")]
         public string Name { get; set; }
+       
         [Column(Name = "group_header")]
         public string Header { get; set; }
+       
         [Column(Name = "group_footer")]
         public string Footer { get; set; }
+       
         [Column(Name = "group_id"), PrimaryKey, Identity]
         public string Id { get; set; }
 
@@ -53,6 +53,17 @@ namespace addressbook_web_tets
             using (AddressbookDB db = new AddressbookDB())
             {
                 return (from g in db.Groups select g).ToList();
+            }
+        }
+
+        public List<ContactDatas> GetContacts() 
+        {
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from c in db.Contacts
+                        from grc in db.GCR
+                        .Where(p => p.GroupId == Id && p.ContactId == c.IdContact)
+                        select c).Distinct().ToList();
             }
         }
     }

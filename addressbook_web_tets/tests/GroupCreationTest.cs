@@ -1,9 +1,6 @@
 ﻿using System;
-//using System.Threading;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Linq;
 using System.IO;
 using System.Xml;
@@ -26,7 +23,6 @@ namespace addressbook_web_tets
             }
             return groups;
         }
-
         public static IEnumerable<GroupDatacs> GroupDataFromCsvFile()
         {
             List<GroupDatacs> groups = new List<GroupDatacs>();
@@ -64,7 +60,7 @@ namespace addressbook_web_tets
         }
 
         [Test]
-        public void TestDBConnectivity()
+        public void TestDBConnectivity1()
         {
             DateTime start = DateTime.Now;
             List<GroupDatacs> fromUi = app.Groups.GetGroupList();
@@ -75,6 +71,15 @@ namespace addressbook_web_tets
             List<GroupDatacs> fromDb = GroupDatacs.GetAll();
             end = DateTime.Now;
             System.Console.Out.WriteLine(end.Subtract(start));
+        }
+
+        [Test]
+        public void TestDBConnectivity2()
+        {
+            foreach (ContactDatas contact in GroupDatacs.GetAll()[0].GetContacts())
+            {
+                System.Console.Out.WriteLine(contact);
+            }
         }
     }
 }
