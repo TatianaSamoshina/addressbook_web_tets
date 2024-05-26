@@ -1,14 +1,12 @@
 ﻿using NUnit.Framework;
-using System;
+//using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Linq;
 
 namespace addressbook_web_tets
 {
     [TestFixture]
-    public class GroupRemovalTests : AuthTestBase//TestBase
+    public class GroupRemovalTests : GroupTestBase
     {
         [Test]
         public void GroupRemovalTest() 
@@ -17,24 +15,21 @@ namespace addressbook_web_tets
             if (!app.Groups.IsGroupPresent(1))
             {
                 GroupDatacs group = new GroupDatacs("qw", "as", "zx");
-                app.Groups.Create(group);
-                // Возвращаемся на страницу групп после создания новой группы
-                app.Navigator.GoToGroupsPage();
+                app.Groups.Create(group);               
+                app.Navigator.GoToGroupsPage(); // Возвращаемся на страницу групп после создания новой группы
             }
-            //Список групп ДО
-            List<GroupDatacs> oldGroups = app.Groups.GetGroupList();
-            // Удаляем группу
-            app.Groups.Remove(0);
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
-            //Список групп ПОСЛЕ
-            List<GroupDatacs> newGroups = app.Groups.GetGroupList();
-            GroupDatacs toBeRemoved = oldGroups[0];
+            
+            List<GroupDatacs> oldGroups = GroupDatacs.GetAll(); //Список групп ДО
+            GroupDatacs tobeRemoved = oldGroups[0];                                     
+            app.Groups.Removed(tobeRemoved); // Удаляем группу
+            Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
+           
+            List<GroupDatacs> newGroups = GroupDatacs.GetAll(); //Список групп ПОСЛЕ //app.Groups.GetGroupList();
             oldGroups.RemoveAt(0);
-            //Проверка
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldGroups.SequenceEqual(newGroups));
+            Assert.AreEqual(oldGroups, newGroups);
             foreach (GroupDatacs group in newGroups)
             {
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(group.Id, toBeRemoved.Id);
+                Assert.AreNotEqual(group.Id, tobeRemoved.Id);
             }
         }
     }

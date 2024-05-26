@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Linq;
+//using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace addressbook_web_tets
 {
     [TestFixture]
-    public class ContactRemovalTests : AuthTestBase//TestBase
+    public class ContactRemovalTests : ContactTestBase
     {
         [Test]
         public void ContactRemovalTest()
@@ -20,18 +18,17 @@ namespace addressbook_web_tets
                 ContactDatas contact = new ContactDatas("n1", "l1");
                 app.Contacts.Create(contact);
             }
-            List<ContactDatas> oldContacts = app.Contacts.GetContactList();
-            // Удаляем контакт
-            app.Contacts.Remove(0);
-            //Проверка
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
-            List<ContactDatas> newContacts = app.Contacts.GetContactList();
-            ContactDatas toBeRemoved = oldContacts[0];
+            List<ContactDatas> oldContacts = ContactDatas.GetAll(); 
+            ContactDatas tobeRemoved = oldContacts[0];
+            app.Contacts.Removed(tobeRemoved); 
+            Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
+
+            List<ContactDatas> newContacts = ContactDatas.GetAll(); 
             oldContacts.RemoveAt(0);
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
+            Assert.AreEqual(oldContacts, newContacts);
             foreach (ContactDatas contact in newContacts)
             {
-                Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreNotEqual(contact.IdContact, toBeRemoved.IdContact);
+                Assert.AreNotEqual(contact.IdContact, tobeRemoved.IdContact);
             }
         }
     }

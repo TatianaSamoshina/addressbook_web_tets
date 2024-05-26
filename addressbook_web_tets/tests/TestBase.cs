@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium;
+//using OpenQA.Selenium.Firefox;
+//using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace addressbook_web_tets
 {
     public class TestBase
     {
+        public static bool PERFORM_LONG_UI_CHECK = true;
         public ApplicationManager app;
         [SetUp]
         public void SetupApplicationManager()
@@ -29,8 +30,7 @@ namespace addressbook_web_tets
         }
         public static Random rnd = new Random();
         public static string GenerateRandomString(int max)
-        {
-            
+        {           
             int l = Convert.ToInt32(rnd.NextDouble() * max);
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < l; i++) 
@@ -39,7 +39,5 @@ namespace addressbook_web_tets
             }
             return builder.ToString();
         }
-
-
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
+//using System.Text.RegularExpressions;
+//using System.Threading;
 using NUnit.Framework;
 using System.Linq;
 using OpenQA.Selenium.Support.UI;
@@ -15,7 +13,7 @@ using Newtonsoft.Json;
 namespace addressbook_web_tets
 {
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
         public static IEnumerable<ContactDatas> RandomContactDataProvider()
         {
@@ -53,10 +51,10 @@ namespace addressbook_web_tets
         [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactTest(ContactDatas contact)
         {
-            List<ContactDatas> oldContacts = app.Contacts.GetContactList();
+            List<ContactDatas> oldContacts = ContactDatas.GetAll();
             app.Contacts.Create(contact);
             Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-            List<ContactDatas> newContacts = app.Contacts.GetContactList();
+            List<ContactDatas> newContacts = ContactDatas.GetAll();
             oldContacts.Add(contact);
             oldContacts.Sort();
             newContacts.Sort();
