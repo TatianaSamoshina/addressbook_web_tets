@@ -1,10 +1,10 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+//using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.Reflection;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
@@ -35,6 +35,16 @@ namespace addressbook_web_tets
             return this;
         }
 
+        public ContactHelper Modify2(ContactDatas contact, ContactDatas newData)
+        {
+            manager.Navigator.ReturnToHomePage();
+            SelectContact(contact.IdContact);
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
         public ContactHelper Remove(int p)
         {
             manager.Navigator.ReturnToHomePage();
@@ -44,10 +54,37 @@ namespace addressbook_web_tets
             return this;
         }
 
+        public ContactHelper Removed(ContactDatas contact)
+        {
+            manager.Navigator.ReturnToHomePage();
+            SelectContactDelete(contact.IdContact);
+            RemoveContact();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper SelectContactDelete(int index)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
+            return this;
+        }
+        public ContactHelper SelectContactDelete(string index)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @value='" + index + "'])")).Click();
+            return this;
+        }
+
+
 
         public ContactHelper SelectContact(int index)
         {
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + (index + 2) + "]/td[8]/a/img")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(string index)
+        {
+            driver.FindElements(By.Name("entry"))[int.Parse(index)].FindElements(By.TagName("td"))[7].FindElement(By.TagName("a")).Click();
             return this;
         }
 
@@ -76,11 +113,11 @@ namespace addressbook_web_tets
                 return false;
             }
         }
-        public ContactHelper SelectContactDelete(int index)
+        /*public ContactHelper SelectContactDelete(int index)
         {
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index + 1) + "]")).Click();
             return this;
-        }
+        }*/
 
         public ContactHelper RemoveContact()
         {
@@ -140,8 +177,7 @@ namespace addressbook_web_tets
         {
             return driver.FindElements(By.CssSelector("tbody tr[name='entry']")).Count;
         }
-
-        
+       
         public ContactDatas GetContactInformationFromTable(int index)
         {
             manager.Navigator.ReturnToHomePage();
@@ -160,43 +196,6 @@ namespace addressbook_web_tets
                 AllEmails = allEmails
             };
         }
-
-        /*public ContactDatas GetContactInformationFromProperties(int index)
-        {
-            manager.Navigator.ReturnToHomePage();
-            InitContactProperties(0);
-
-            IWebElement contentElement = driver.FindElement(By.Id("content"));
-            string innerText = contentElement.Text;
-            string[] lines = innerText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (lines.Length < 5)
-            {
-                throw new IndexOutOfRangeException("The content does not contain enough lines.");
-            }
-
-            string[] values = lines[0].Split(' ');
-            string firstName = values.Length > 0 ? values[0] : "";
-            string lastName = values.Length > 1 ? values[1] : "";
-            string address = lines[1];
-            string homePhone = lines.Length > 2 && lines[2].StartsWith("H:") ? lines[2].Substring(3).Trim() : "";
-            string mobilePhone = lines.Length > 3 && lines[3].StartsWith("M:") ? lines[3].Substring(3).Trim() : "";
-            string workPhone = lines.Length > 4 && lines[4].StartsWith("W:") ? lines[4].Substring(3).Trim() : "";
-            string email = lines[5];
-            string email2 = lines[6];
-            string email3 = lines[7];
-
-            return new ContactDatas(firstName, lastName)
-            {
-                Address = address,
-                HomePhone = homePhone,
-                MobilePhone = mobilePhone,
-                WorkPhone = workPhone,
-                Email = email,
-                Email2 = email2,
-                Email3 = email3
-            };          
-        }*/
 
         public ContactDatas GetContactInformationFromEditForm(int index)
         {

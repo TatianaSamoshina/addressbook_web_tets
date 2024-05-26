@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.Firefox;
+//using OpenQA.Selenium.Support.UI;
+//using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,12 +33,37 @@ namespace addressbook_web_tets
             ReturnToGroupPage();
             return this;
         }
+        public GroupHelper Modify2(GroupDatacs group, GroupDatacs newData)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(group.Id);
+            InitGroupModification();
+            FillGroupForm(newData);
+            SubmitGroupModification();
+            ReturnToGroupPage();
+            return this;
+        }
         public GroupHelper Remove(int p)
         {
             manager.Navigator.GoToGroupsPage();
             SelectGroup(p);
             RemoveGroup();
             ReturnToGroupPage();
+            return this;
+        }
+
+        public GroupHelper Removed(GroupDatacs group)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(group.Id);
+            RemoveGroup();
+            ReturnToGroupPage();
+            return this;
+        }
+
+        public GroupHelper SelectGroup(string index)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @value='"+ index + "'])")).Click();
             return this;
         }
 

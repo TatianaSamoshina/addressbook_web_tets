@@ -1,11 +1,13 @@
 ﻿using System;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LinqToDB.Mapping;
 
 namespace addressbook_web_tets
 {
+    [Table(Name = "group_list")]
     public class GroupDatacs: IEquatable<GroupDatacs>, IComparable<GroupDatacs>
     {
         public GroupDatacs(string name, string header, string footer)
@@ -17,9 +19,13 @@ namespace addressbook_web_tets
         public GroupDatacs()
         {
         }
+        [Column (Name = "group_name")]
         public string Name { get; set; }
+        [Column(Name = "group_header")]
         public string Header { get; set; }
+        [Column(Name = "group_footer")]
         public string Footer { get; set; }
+        [Column(Name = "group_id"), PrimaryKey, Identity]
         public string Id { get; set; }
 
 
@@ -41,5 +47,13 @@ namespace addressbook_web_tets
 
         public override string ToString()
         { return "name=" + Name + "\nheader=" + Header + "\nfooter =" + Footer; }
+
+        public static List<GroupDatacs> GetAll() 
+        {
+            using (AddressbookDB db = new AddressbookDB())
+            {
+                return (from g in db.Groups select g).ToList();
+            }
+        }
     }
 }

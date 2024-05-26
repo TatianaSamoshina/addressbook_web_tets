@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace addressbook_web_tets
 {
     [TestFixture]
-    public class ContactModificationTests : AuthTestBase
+    public class ContactModificationTests : ContactTestBase
     {
         [Test]
         public void ContactModificationTest()
@@ -22,11 +20,11 @@ namespace addressbook_web_tets
             }
             // Модифицируем контакт
             ContactDatas newDataForModification = new ContactDatas("newName", "newLastName");
-            List<ContactDatas> oldContacts = app.Contacts.GetContactList();
+            List<ContactDatas> oldContacts = ContactDatas.GetAll();
             ContactDatas oldData = oldContacts[0];
-            app.Contacts.Modify(0, newDataForModification);
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
-            List<ContactDatas> newContacts = app.Contacts.GetContactList();
+            app.Contacts.Modify2(oldData, newDataForModification);
+            Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
+            List<ContactDatas> newContacts = ContactDatas.GetAll();
             oldContacts[0].FName = newDataForModification.FName;
             oldContacts.Sort();
             newContacts.Sort();
@@ -35,7 +33,7 @@ namespace addressbook_web_tets
             {
                 if (contact.IdContact == oldData.IdContact)
                 {
-                    Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(newDataForModification.FName, contact.FName);
+                    Assert.AreEqual(newDataForModification.FName, contact.FName);
                 }
             }
         }
