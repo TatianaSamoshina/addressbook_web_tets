@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Text.RegularExpressions;
-//using System.Security.Policy;
-//using System.Reflection;
 using OpenQA.Selenium.Support.UI;
+using System.Reflection;
 
 namespace addressbook_web_tets
 {
@@ -33,10 +32,11 @@ namespace addressbook_web_tets
             return this;
         }
 
-        public ContactHelper Modify2(ContactDatas contact, ContactDatas newData)
+ 
+        public ContactHelper Modify2(string id, ContactDatas newData)
         {
             manager.Navigator.ReturnToHomePage();
-            SelectContact(contact.IdContact);
+            SelectContactById(id);
             FillContactForm(newData);
             SubmitContactModification();
             manager.Navigator.ReturnToHomePage();
@@ -72,6 +72,11 @@ namespace addressbook_web_tets
             return this;
         }
 
+        private ContactHelper SelectContactById(string id)
+        {
+            driver.FindElement(By.XPath($"//tr[td/input[@id='{id}']]/td[@class='center']/a[contains(@href, 'edit.php?id={id}')]")).Click();
+            return this;
+        }
 
         public ContactHelper SelectContact(int index)
         {
@@ -84,6 +89,7 @@ namespace addressbook_web_tets
             driver.FindElements(By.Name("entry"))[int.Parse(index)].FindElements(By.TagName("td"))[7].FindElement(By.TagName("a")).Click();
             return this;
         }
+
 
         public bool IsContactPresent(int index)
         {
