@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace addressbook_web_tets
@@ -21,11 +20,11 @@ namespace addressbook_web_tets
             // Модифицируем контакт
             ContactDatas newDataForModification = new ContactDatas("newName", "newLastName");
             List<ContactDatas> oldContacts = ContactDatas.GetAll();
-            ContactDatas oldData = oldContacts[0];
-            app.Contacts.Modify2(oldData, newDataForModification);
+            ContactDatas oldData = oldContacts[1];
+            app.Contacts.Modify2(oldData.IdContact, newDataForModification);
             Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
             List<ContactDatas> newContacts = ContactDatas.GetAll();
-            oldContacts[0].FName = newDataForModification.FName;
+            oldContacts[1].FName = newDataForModification.FName;
             oldContacts.Sort();
             newContacts.Sort();
             Assert.IsTrue(oldContacts.SequenceEqual(newContacts));
